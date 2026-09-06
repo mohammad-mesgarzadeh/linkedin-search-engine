@@ -1,0 +1,7 @@
+{
+  "name": "linkedin-dataset-search-engine",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install --prefix backend && npm install --prefix frontend"
+  }
+}

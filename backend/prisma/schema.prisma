@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id          Int          @id @default(autoincrement())
+  sourceKey   String       @unique
+  name        String
+  headline    String?
+  jobTitle    String?
+  location    String?
+  summary     String?
+  linkedinUrl String?
+  skills      ProfileSkill[]
+  experiences Experience[]
+  education   Education[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([name])
+  @@index([jobTitle])
+  @@index([location])
+}
+
+model Skill {
+  id       Int            @id @default(autoincrement())
+  name     String         @unique
+  profiles ProfileSkill[]
+}
+
+model ProfileSkill {
+  profileId Int
+  skillId  Int
+  profile  Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  skill    Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@id([profileId, skillId])
+  @@index([skillId])
+}
+
+model Experience {
+  id        Int     @id @default(autoincrement())
+  profileId Int
+  company   String?
+  title     String?
+  startDate String?
+  endDate   String?
+  summary   String?
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+  @@index([title])
+  @@index([company])
+}
+
+model Education {
+  id          Int     @id @default(autoincrement())
+  profileId   Int
+  institution String?
+  degree      String?
+  major       String?
+  startDate   String?
+  endDate     String?
+  summary     String?
+  profile     Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+  @@index([institution])
+}

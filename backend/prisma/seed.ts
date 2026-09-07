@@ -1,6 +1,7 @@
 import "dotenv/config";
+import { Prisma } from "@prisma/client";
 import { prisma } from "../src/db/prisma";
-import { readDataset, parseStructured, text, ParsedEducation, ParsedExperience } from "../src/utils/dataset";
+import { readDataset, parseStructured, searchableText, text, ParsedEducation, ParsedExperience } from "../src/utils/dataset";
 
 const datasetPath = process.env.DATASET_PATH;
 const bounded = (value: string | undefined, maxLength: number) => value?.slice(0, maxLength);
@@ -37,6 +38,8 @@ async function seed() {
         location: bounded(text(row.location_name), 300),
         summary: bounded(text(row.summary), 10000),
         linkedinUrl: bounded(text(row.linkedin_url), 1000),
+        rawData: JSON.parse(JSON.stringify(row)) as Prisma.InputJsonValue,
+        searchableText: searchableText(row),
         skills: { deleteMany: {}, create: [] },
         experiences: { deleteMany: {} },
         education: { deleteMany: {} }
@@ -48,7 +51,9 @@ async function seed() {
         jobTitle: bounded(text(row.job_title), 300),
         location: bounded(text(row.location_name), 300),
         summary: bounded(text(row.summary), 10000),
-        linkedinUrl: bounded(text(row.linkedin_url), 1000)
+        linkedinUrl: bounded(text(row.linkedin_url), 1000),
+        rawData: JSON.parse(JSON.stringify(row)) as Prisma.InputJsonValue,
+        searchableText: searchableText(row)
       }
     });
 

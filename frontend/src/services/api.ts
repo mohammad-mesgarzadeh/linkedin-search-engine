@@ -8,6 +8,8 @@ export interface Profile {
   location?: string | null;
   summary?: string | null;
   linkedinUrl?: string | null;
+  rawData: Record<string, unknown>;
+  searchableText: string;
   skills: string[];
   experiences: { company?: string | null; title?: string | null; startDate?: string | null; endDate?: string | null }[];
   education: { institution?: string | null; degree?: string | null; major?: string | null }[];

@@ -17,6 +17,8 @@ export interface DatasetRow {
   [key: string]: unknown;
 }
 
+export type DatasetValue = string | number | boolean | null | DatasetValue[] | { [key: string]: DatasetValue };
+
 export interface ParsedExperience {
   company?: { name?: string };
   title?: string;
@@ -39,6 +41,14 @@ export const text = (value: unknown): string | undefined => {
   const normalized = String(value).trim();
   return normalized.length > 0 ? normalized : undefined;
 };
+
+export function searchableText(value: unknown): string {
+  if (value === null || value === undefined) return "";
+  if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") return String(value);
+  if (Array.isArray(value)) return value.map(searchableText).filter(Boolean).join(" ");
+  if (typeof value === "object") return Object.values(value).map(searchableText).filter(Boolean).join(" ");
+  return "";
+}
 
 export function parseStructured<T>(value: unknown): T {
   if (Array.isArray(value) || (value !== null && typeof value === "object")) return value as T;

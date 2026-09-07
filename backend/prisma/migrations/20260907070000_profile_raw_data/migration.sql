@@ -1,0 +1,2 @@
+ALTER TABLE "Profile" ADD COLUMN "rawData" JSONB NOT NULL DEFAULT '{}';
+ALTER TABLE "Profile" ADD COLUMN "searchableText" TEXT NOT NULL DEFAULT '';

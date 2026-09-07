@@ -16,6 +16,8 @@ model Profile {
   location    String?
   summary     String?
   linkedinUrl String?
+  rawData     Json
+  searchableText String
   skills      ProfileSkill[]
   experiences Experience[]
   education   Education[]

@@ -10,6 +10,7 @@ export async function searchProfiles(query: ProfileQuery) {
     { location: { contains: q, mode: "insensitive" as const } },
     { summary: { contains: q, mode: "insensitive" as const } },
     { jobTitle: { contains: q, mode: "insensitive" as const } },
+    { searchableText: { contains: q, mode: "insensitive" as const } },
     { skills: { some: { skill: { name: { contains: q, mode: "insensitive" as const } } } } },
     { experiences: { some: { OR: [
       { title: { contains: q, mode: "insensitive" as const } },
